@@ -1,29 +1,30 @@
 # Usa imagem PHP com FPM
 FROM php:8.2-fpm
 
-# Instala dependências do sistema e extensões do PHP
 RUN apt-get update && apt-get install -y \
     git curl libpng-dev libonig-dev libxml2-dev zip unzip \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
-# Instala Composer
 COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
 
-# Define o diretório de trabalho
 WORKDIR /var/www
 
-# Copia só os arquivos do Composer primeiro (aproveita cache)
-COPY composer.json composer.lock ./
+# Se o composer.json estiver em uma pasta chamada "laravel"
+COPY laravel/composer.json laravel/composer.lock ./
 
-# Instala dependências do Laravel (sem dev)
 RUN composer install --no-dev --optimize-autoloader
 
+# Copia todo o código do projeto
+COPY laravel/ ./
 
-# Define porta
+RUN mkdir -p /var/www/storage/framework/{sessions,views,cache} \
+    && chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
+    && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
+
 EXPOSE 8000
 
-# Comando inicial do container
 CMD sh -c "php artisan serve --host=0.0.0.0 --port=$PORT"
+
 
 
 
