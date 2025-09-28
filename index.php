@@ -83,11 +83,11 @@
                  
                 
                 <div class="d-flex justify-content-center align-items-center flex-wrap">
-<img src="/img/gmail-logo.png" alt="Logo Gmail" class="img-fluid mx-2 mb-2" style="height: 40px;">
-<img src="/img/sharepoint-logo.png" alt="Logo SharePoint" class="img-fluid mx-2 mb-2" style="height: 40px;">
-<img src="/img/powerbi-logo.png" alt="Logo Power BI" class="img-fluid mx-2 mb-2" style="height: 40px;">
-<img src="/img/microsoft-logo.png" alt="Logo Microsoft" class="img-fluid mx-2 mb-2" style="height: 40px;">
-<img src="/img/cahtboot.png" alt="Logo cahtboot" class="img-fluid mx-2 mb-2" style="height: 40px;">
+<img src="img/gmail-logo.png" alt="Logo Gmail" class="img-fluid mx-2 mb-2" style="height: 40px;">
+<img src="img/sharepoint-logo.png" alt="Logo SharePoint" class="img-fluid mx-2 mb-2" style="height: 40px;">
+<img src="img/powerbi-logo.png" alt="Logo Power BI" class="img-fluid mx-2 mb-2" style="height: 40px;">
+<img src="img/microsoft-logo.png" alt="Logo Microsoft" class="img-fluid mx-2 mb-2" style="height: 40px;">
+<img src="img/cahtboot.png" alt="Logo cahtboot" class="img-fluid mx-2 mb-2" style="height: 40px;">
                 </div>
             </div>
         </div>
@@ -146,7 +146,7 @@
 <div class="col">
     <div class="card h-100 shadow-sm system-card">
         <a href="https://ticetec.com.br/comercial/comercial.php">
-            <img src="/img/Pedidos.png" class="card-img-top" alt="Sistema de Controle de Pedidos e PDV">
+            <img src="img/Pedidos.png" class="card-img-top" alt="Sistema de Controle de Pedidos e PDV">
         </a>
         <div class="card-body">
             <h5 class="card-title fw-bold text-dark-blue">Controle de Pedidos e Acompanhamento de PDV</h5>
@@ -160,7 +160,7 @@
 
             <div class="col">
                 <div class="card h-100 shadow-sm system-card">
-                    <img src="/img/bi.jpg">
+                    <img src="img/bi.jpg">
                     <div class="card-body">
                         <h5 class="card-title fw-bold text-dark-blue">Análises de Power BI Personalizadas</h5>
                         <p class="card-text">Transforme seus dados brutos em dashboards interativos e relatórios visuais poderosos. Oferecemos análises aprofundadas com Power BI para insights que impulsionam o crescimento do seu negócio.</p>
@@ -239,8 +239,9 @@
     <script src="/JS/script.js"></script>
     
        <a href="https://api.whatsapp.com/send?phone=5571996758800" class="whatsapp-button" target="_blank">
-    <img src="/img/whatsapp-icon.png" alt="">
+    <img src="img/whatsapp-icon.png" alt="">
 </a>
  
 </body>
+
 </html>
