@@ -1,0 +1,168 @@
+/* Cores personalizadas */
+:root {
+    --primary-blue: #007BFF; /* Azul Elétrico - Principal */
+    --success-green: #28A745; /* Verde Sucesso - Destaque */
+    --info-cyan: #17A2B8;    /* Ciano - Destaque */
+    --dark-blue: #0A192F; /* Azul Escuro para textos principais */
+    --dark-gray: #343A40;
+    --light-gray: #f8f9fa;
+    --white: #FFFFFF;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--dark-gray);
+}
+
+/* Navbar Personalizada */
+.navbar {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.8rem;
+    color: var(--primary-blue) !important;
+}
+
+#navbar-logo {
+    background-color: var(--primary-blue);
+    border: 2px solid var(--info-cyan);
+}
+
+.navbar-nav .nav-link {
+    color: var(--white) !important;
+    font-weight: 500;
+    margin-left: 15px;
+    transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+    color: var(--success-green) !important;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://via.placeholder.com/1500x800/0A192F/FFFFFF?text=Fundo+Tecnologico') no-repeat center center;
+    background-size: cover;
+    min-height: 70vh;
+    padding-top: 100px; /* Ajuste para navbar fixa */
+    padding-bottom: 50px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(0, 123, 255, 0.2) 0%, rgba(0, 0, 0, 0) 70%);
+}
+
+.hero-section h1 {
+    font-size: 3.5rem;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+.hero-section p {
+    font-size: 1.5rem;
+}
+
+.hero-section .btn {
+    background-color: var(--success-green);
+    border-color: var(--success-green);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.hero-section .btn:hover {
+    background-color: var(--info-cyan);
+    border-color: var(--info-cyan);
+    transform: translateY(-3px);
+}
+
+/* Títulos das Seções */
+h2 {
+    font-size: 2.5rem;
+    color: var(--dark-blue);
+    position: relative;
+    padding-bottom: 15px;
+}
+
+h2::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background-color: var(--primary-blue);
+    border-radius: 2px;
+}
+
+/* About Us Section */
+#about img {
+    max-height: 350px;
+    object-fit: cover;
+}
+
+/* Services Section */
+.service-card {
+    border: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+.service-card i {
+    color: var(--primary-blue); /* Ícones coloridos */
+}
+
+/* Contact Section */
+#contact form {
+    background-color: var(--white);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+#contact .btn {
+    background-color: var(--primary-blue);
+    border-color: var(--primary-blue);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#contact .btn:hover {
+    background-color: var(--dark-blue);
+    border-color: var(--dark-blue);
+    transform: translateY(-2px);
+}
+
+
+/* Footer */
+footer {
+    background-color: var(--dark-blue) !important; /* Cor mais escura para o rodapé */
+    font-size: 0.9rem;
+}
+
+footer .social-icons a {
+    transition: color 0.3s ease;
+}
+
+footer .social-icons a:hover {
+    color: var(--success-green) !important;
+}
+
+/* Animações (opcional, requer Animate.css) */
+/* Se quiser usar Animate.css, adicione o link no HTML:
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+*/
+
+
