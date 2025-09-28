@@ -12,11 +12,14 @@ COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
 # Define o diretório de trabalho
 WORKDIR /var/www
 
-# Copia os arquivos do projeto
-COPY . .
+# Copia só os arquivos do Composer primeiro (aproveita cache)
+COPY composer.json composer.lock ./
 
 # Instala dependências do Laravel (sem dev)
 RUN composer install --no-dev --optimize-autoloader
+
+# Copia o restante do projeto
+COPY . .
 
 # Garante que as pastas do storage existam e dá as permissões corretas
 RUN mkdir -p /var/www/storage/framework/{sessions,views,cache} \
@@ -28,5 +31,6 @@ EXPOSE 8000
 
 # Comando inicial do container
 CMD sh -c "php artisan serve --host=0.0.0.0 --port=$PORT"
+
 
 
