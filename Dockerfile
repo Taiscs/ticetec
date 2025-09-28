@@ -18,13 +18,6 @@ COPY composer.json composer.lock ./
 # Instala dependências do Laravel (sem dev)
 RUN composer install --no-dev --optimize-autoloader
 
-# Copia o restante do projeto
-COPY . .
-
-# Garante que as pastas do storage existam e dá as permissões corretas
-RUN mkdir -p /var/www/storage/framework/{sessions,views,cache} \
-    && chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
-    && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
 # Define porta
 EXPOSE 8000
