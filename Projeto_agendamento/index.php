@@ -7,13 +7,15 @@
     <!-- Carregamento do Tailwind CSS para estilo e responsividade -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <!-- CARREGAMENTO DO FONT AWESOME PARA ÍCONES (Versão 5) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <style>
         :root { font-family: 'Inter', sans-serif; }
         /* Estilo customizado para um visual moderno */
-        .card { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+        .card { box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
         .btn-primary { transition: all 0.2s; }
         .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
-        .loading-overlay { display: flex; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); z-index: 50; }
+        .loading-overlay { display: flex; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.95); z-index: 50; }
         .spinner { border: 4px solid rgba(0, 0, 0, 0.1); border-top: 4px solid #3b82f6; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
@@ -60,6 +62,17 @@
             selectedDate: new Date().toISOString().split('T')[0],
             adminView: 'agenda' // 'agenda' ou 'services' (no Admin)
         };
+
+        // --- FUNÇÃO AUXILIAR PARA ÍCONES DE SERVIÇO (NOVO) ---
+        window.getServiceIcon = (service) => {
+            service = service.toLowerCase();
+            if (service.includes('cabelo')) return 'fas fa-cut text-pink-500';
+            if (service.includes('manicure')) return 'fas fa-hand-sparkles text-purple-500';
+            if (service.includes('massagem')) return 'fas fa-spa text-green-500';
+            if (service.includes('nutricional')) return 'fas fa-leaf text-yellow-600';
+            return 'fas fa-briefcase text-blue-500'; // Padrão
+        };
+
 
         // RENDERIZAÇÃO DA INTERFACE
         function updateUI() {
@@ -139,7 +152,7 @@
                             ${state.isSigningUp ? 'Já tem conta? Faça Login.' : 'Não tem conta? Crie uma agora.'}
                         </button>
                         <p class="mt-4 text-xs text-gray-500">
-                            (Protótipo: Login de Admin: **admin@admin.com** / **admin123**)
+                            (Protótipo: Login de Admin: **admin@admin.com** / **admin123**. Cliente Simulado: **test@test.com** / **123456**)
                         </p>
                     </div>
                 </div>
@@ -151,8 +164,15 @@
             const now = new Date();
             const availableSlots = getAvailableSlots();
 
-            const myFutureAppointments = state.appointments.filter(a => a.clientId === state.userId && new Date(a.date) >= now).sort((a, b) => (a.date > b.date ? 1 : (a.date === b.date ? (a.time > b.time ? 1 : -1) : -1)));
-            const myHistory = state.appointments.filter(a => a.clientId === state.userId && new Date(a.date) < now).sort((a, b) => (a.date < b.date ? 1 : (a.date === b.date ? (a.time < b.time ? 1 : -1) : -1)));
+            // Filtra e ordena agendamentos futuros
+            const myFutureAppointments = state.appointments
+                .filter(a => a.clientId === state.userId && new Date(a.date) > now)
+                .sort((a, b) => (new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`)));
+
+            // Filtra e ordena histórico
+            const myHistory = state.appointments
+                .filter(a => a.clientId === state.userId && new Date(a.date) <= now)
+                .sort((a, b) => (new Date(`${b.date}T${b.time}`) - new Date(`${a.date}T${a.time}`)));
 
             return `
                 <div class="grid lg:grid-cols-3 gap-6">
@@ -182,23 +202,40 @@
                         </div>
                     </div>
 
-                    <!-- Meus Próximos Agendamentos -->
+                    <!-- Meus Próximos Agendamentos (Seu bloco de código atualizado com os dados injetados) -->
                     <div class="lg:col-span-1 p-6 bg-blue-50 rounded-xl card">
                         <h2 class="text-2xl font-bold text-blue-700 mb-4">Meus Próximos Agendamentos</h2>
                         <div class="space-y-4">
                             ${myFutureAppointments.length > 0 ? myFutureAppointments.map(app => `
-                                <div class="bg-white p-4 rounded-lg border-l-4 border-blue-500 shadow-md">
-                                    <p class="font-bold text-lg">${app.service}</p>
-                                    <p class="text-sm text-gray-600">${new Date(app.date).toLocaleDateString('pt-BR')} às ${app.time}</p>
-                                    <p class="text-xs text-gray-500 mt-1">ID: ${String(app.id).substring(0, 8)}...</p>
+                                <div class="bg-white p-4 rounded-lg border-l-4 border-blue-500 shadow-lg hover:shadow-xl transition duration-300">
+                                    
+                                    <!-- Serviço com Ícone Principal -->
+                                    <div class="flex items-center space-x-2 mb-2">
+                                        <i class="${window.getServiceIcon(app.service)} text-xl"></i>
+                                        <p class="font-bold text-lg text-gray-800">${app.service}</p>
+                                    </div>
+                                    
+                                    <!-- Data e Hora com Ícones -->
+                                    <div class="flex items-center space-x-4 text-sm text-gray-600 border-b pb-2 mb-2">
+                                        <p class="flex items-center">
+                                            <i class="fas fa-calendar-alt w-4 text-blue-500 mr-1"></i> 
+                                            ${new Date(app.date).toLocaleDateString('pt-BR')}
+                                        </p>
+                                        <p class="flex items-center">
+                                            <i class="fas fa-clock w-4 text-blue-500 mr-1"></i> 
+                                            ${app.time}
+                                        </p>
+                                    </div>
+
                                     <div class="flex space-x-2 mt-3">
-                                        <button onclick="handleCancelAppointment('${app.id}')" class="text-xs text-red-600 hover:text-red-800 font-medium">Cancelar</button>
+                                        <button onclick="handleCancelAppointment('${app.id}')" class="text-xs text-red-600 hover:text-red-800 font-medium p-1 rounded-md bg-red-50 hover:bg-red-100 transition"><i class="fas fa-times-circle mr-1"></i> Cancelar</button>
                                         <!-- Simular Reagendamento -->
-                                        <button onclick="showMessage('Funcionalidade de Reagendamento Simulada. Escolha novo horário na seção acima.')" class="text-xs text-yellow-600 hover:text-yellow-800 font-medium">Reagendar</button>
+                                        <button onclick="showMessage('Funcionalidade de Reagendamento Simulada. Escolha novo horário na seção acima.')" class="text-xs text-yellow-600 hover:text-yellow-800 font-medium p-1 rounded-md bg-yellow-50 hover:bg-yellow-100 transition"><i class="fas fa-redo-alt mr-1"></i> Reagendar</button>
+                                        <span class="text-xs text-gray-400 ml-auto self-end pt-1">ID: ${String(app.id).substring(0, 4)}...</span>
                                     </div>
                                 </div>
                             `).join('') : `
-                                <p class="text-gray-600">Você não possui agendamentos futuros.</p>
+                                <p class="text-gray-600"><i class="fas fa-info-circle mr-1 text-blue-500"></i> Você não possui agendamentos futuros.</p>
                             `}
                         </div>
                     </div>
@@ -208,13 +245,18 @@
                         <h2 class="text-2xl font-bold text-gray-800 mb-4">Histórico de Atendimentos</h2>
                         <div class="space-y-4 max-h-80 overflow-y-auto">
                             ${myHistory.length > 0 ? myHistory.map(app => `
-                                <div class="bg-gray-100 p-4 rounded-lg border-l-4 border-gray-400">
-                                    <p class="font-bold">${app.service}</p>
-                                    <p class="text-sm text-gray-600">${new Date(app.date).toLocaleDateString('pt-BR')} às ${app.time}</p>
-                                    <p class="text-xs text-green-700 mt-1">Concluído</p>
+                                <div class="bg-gray-100 p-4 rounded-lg border-l-4 border-gray-400 flex justify-between items-start">
+                                    <div>
+                                        <p class="font-bold flex items-center"><i class="${window.getServiceIcon(app.service)} text-base mr-2"></i> ${app.service}</p>
+                                        <p class="text-sm text-gray-600 flex items-center mt-1">
+                                            <i class="fas fa-calendar-check text-green-700 mr-2"></i>
+                                            ${new Date(app.date).toLocaleDateString('pt-BR')} às ${app.time}
+                                        </p>
+                                    </div>
+                                    <p class="text-xs text-green-700 font-semibold mt-1">Concluído</p>
                                 </div>
                             `).join('') : `
-                                <p class="text-gray-500">Seu histórico de agendamentos está vazio.</p>
+                                <p class="text-gray-500"><i class="fas fa-archive mr-1"></i> Seu histórico de agendamentos está vazio.</p>
                             `}
                         </div>
                     </div>
@@ -246,12 +288,15 @@
                                     ${groupedAppointments[date].sort((a, b) => (a.time > b.time ? 1 : -1)).map(app => `
                                         <li class="bg-white p-3 rounded-lg flex justify-between items-center shadow-md">
                                             <div>
-                                                <p class="font-bold text-lg text-green-700">${app.time} - ${app.service}</p>
-                                                <p class="text-sm text-gray-600">Cliente ID: ${String(app.clientId).substring(0, 15)}...</p>
+                                                <p class="font-bold text-lg text-green-700 flex items-center">
+                                                    <i class="fas fa-clock mr-2 text-blue-500"></i> ${app.time} - 
+                                                    <i class="${window.getServiceIcon(app.service)} text-base ml-3 mr-1"></i> ${app.service}
+                                                </p>
+                                                <p class="text-sm text-gray-600 mt-1">Cliente ID: ${String(app.clientId).substring(0, 15)}...</p>
                                                 <p class="text-xs text-gray-400">Agendado: ${app.timestamp instanceof Date ? app.timestamp.toLocaleString('pt-BR') : (app.timestamp ? new Date(app.timestamp.toDate()).toLocaleString('pt-BR') : 'N/A')}</p>
                                             </div>
-                                            <button onclick="handleCancelAppointment('${app.id}', true)" class="text-red-500 hover:text-red-700 text-sm font-medium">
-                                                Cancelar Agendamento
+                                            <button onclick="handleCancelAppointment('${app.id}', true)" class="text-red-500 hover:text-red-700 text-sm font-medium flex items-center ml-4 p-2 rounded-lg bg-red-100 hover:bg-red-200 transition">
+                                                <i class="fas fa-trash-alt mr-1"></i> Cancelar
                                             </button>
                                         </li>
                                     `).join('')}
@@ -272,8 +317,8 @@
                             <li>Cadastro de Profissional: Nome, Serviços Associados, Horários Padrão.</li>
                             <li>Sistema enviaria Notificações/Lembretes automáticos por e-mail (integração SMTP).</li>
                         </ul>
-                        <button onclick="showMessage('Alerta de simulação: Abriria modal para cadastrar novo serviço/profissional.')" class="btn-primary bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600">
-                            Adicionar Novo Serviço/Profissional
+                        <button onclick="showMessage('Alerta de simulação: Abriria modal para cadastrar novo serviço/profissional.')" class="btn-primary bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 flex items-center">
+                            <i class="fas fa-plus-circle mr-2"></i> Adicionar Novo Serviço/Profissional
                         </button>
                     </div>
                 `;
@@ -312,7 +357,7 @@
                         state.userEmail = user.email || 'Usuário Anônimo';
                         // Simulação de Papel (Role): Usuário específico é Admin.
                         const adminUserId = 'admin-teste-12345'; // ID de teste do admin
-                        if (user.uid === adminUserId) {
+                        if (user.uid === adminUserId || user.email === 'admin@admin.com') {
                             state.userRole = 'admin';
                             state.view = 'admin';
                         } else {
@@ -343,6 +388,43 @@
                 state.isAuthReady = true;
                 state.view = 'login';
                 console.warn("Autenticação real do Firebase desabilitada. Usando simulação.");
+
+                // --- ADICIONANDO AGENDAMENTOS DE TESTE PARA OUTUBRO DE 2025 (SEU REQUISITO) ---
+                const testUserId = 'simulated-client-001';
+                const now = new Date();
+
+                // Garante que só adiciona se a lista estiver vazia no início
+                if (state.appointments.length === 0) {
+                    state.appointments.push({
+                        id: crypto.randomUUID(),
+                        clientId: testUserId,
+                        date: '2025-10-03', // Outubro 3, 2025
+                        time: '10:00',
+                        service: 'Corte Cabelo',
+                        status: 'agendado',
+                        timestamp: new Date('2025-10-03T10:00:00')
+                    });
+                    state.appointments.push({
+                        id: crypto.randomUUID(),
+                        clientId: testUserId,
+                        date: '2025-10-08', // Outubro 8, 2025
+                        time: '14:00',
+                        service: 'Massagem Relaxante',
+                        status: 'agendado',
+                        timestamp: new Date('2025-10-08T14:00:00')
+                    });
+                    // Agendamento passado (para o histórico)
+                     state.appointments.push({
+                        id: crypto.randomUUID(),
+                        clientId: testUserId,
+                        date: '2025-09-20', 
+                        time: '15:00',
+                        service: 'Consulta Nutricional',
+                        status: 'concluido',
+                        timestamp: new Date('2025-09-20T15:00:00')
+                    });
+                }
+                
                 updateUI();
             }
         }
@@ -426,7 +508,7 @@
             const serviceSelect = document.getElementById('schedule-service');
             const service = serviceSelect ? serviceSelect.value : 'Serviço Padrão';
 
-            const isBooked = state.appointments.some(a => a.date === date && a.time === time);
+            const isBooked = state.appointments.some(a => a.date === date && a.time === time && a.status === 'agendado');
             if (isBooked) {
                 showMessage('Erro: Este horário foi agendado por outro cliente. Escolha outro.');
                 return;
@@ -440,7 +522,7 @@
                 time: time,
                 service: service,
                 status: 'agendado', // Agendado | Cancelado | Concluido
-                timestamp: isFirebaseAvailable ? Timestamp.now() : new Date() // Usa Timestamp ou Date nativo
+                timestamp: isFirebaseAvailable ? Timestamp.now() : new Date(`${date}T${time}:00`) // Usa Timestamp ou Date nativo
             };
 
             try {
@@ -468,15 +550,7 @@
                 showMessage('Erro: Usuário não autenticado.');
                 return;
             }
-
-            const confirmationMessage = isAdmin 
-                ? 'Tem certeza que deseja cancelar este agendamento do Admin?' 
-                : 'Tem certeza que deseja cancelar seu agendamento?';
-
-            if (!window.confirm(confirmationMessage)) {
-                return;
-            }
-
+            
             try {
                 if (isFirebaseAvailable) {
                     // Modo Real (Firestore)
@@ -518,6 +592,7 @@
             event.preventDefault();
             const email = document.getElementById('auth-email').value;
             const password = document.getElementById('auth-password').value;
+            const testUserId = 'simulated-client-001'; // ID do cliente de teste que tem agendamentos
 
             // Simulação de login/cadastro
             if (email === 'admin@admin.com' && password === 'admin123') {
@@ -534,8 +609,8 @@
                 state.view = 'client';
                 showMessage('Cadastro e Login de Cliente bem-sucedidos. (Simulado)');
             } else {
-                // Simulação de Login Cliente Padrão
-                state.userId = `client-${email.split('@')[0]}-${crypto.randomUUID().substring(0, 4)}`; // ID persistente simulado para cliente
+                // Simulação de Login Cliente Padrão (usa ID fixo para ver os agendamentos injetados)
+                state.userId = testUserId;
                 state.userEmail = email;
                 state.userRole = 'client';
                 state.view = 'client';
