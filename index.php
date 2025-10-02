@@ -138,7 +138,7 @@
                     <img src="/img/CRM.png" class="card-img-top" alt="Sistema de Gerenciamento de Escala"></a>
                     <div class="card-body">
                         <h5 class="card-title fw-bold text-dark-blue">Sitema CRM</h5>
-                        <p class="card-text">Otimize a gestão de equipes e horários com nossa solução intuitiva. Planeje, distribua e acompanhe escalas de trabalho de forma eficiente, garantindo a cobertura ideal e Dentro das Regras legais, Respeitando Intrajornada, Jornada Máxima de Trabalho, Intervalo Obrigatório, E descanso dominical</p>
+                        <p class="card-text">Integração com WhatsApp, controle de conversas, clientes aguardando resposta, número total de leads, percentual de conversão de vendas, relatório final de vendas, resultado individual de cada consultor comercial e resultado geral da sua empresa.</p>
                     </div>
                 </div>
             </div>
@@ -245,4 +245,5 @@
 </body>
 
 </html>
+
 
