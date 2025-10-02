@@ -134,10 +134,10 @@
         <div class="row row-cols-1 row-cols-md-2 g-4">
             <div class="col">
                 <div class="card h-100 shadow-sm system-card">
-                    <a href="https://ticetec.com.br/Escala/index.php">
-                    <img src="/img/Escala.png" class="card-img-top" alt="Sistema de Gerenciamento de Escala"></a>
+                    <a href="https://crm-caramelo.onrender.com/">
+                    <img src="/img/CRM.png" class="card-img-top" alt="Sistema de Gerenciamento de Escala"></a>
                     <div class="card-body">
-                        <h5 class="card-title fw-bold text-dark-blue">Sistema de Gerenciamento de Escala</h5>
+                        <h5 class="card-title fw-bold text-dark-blue">Sitema CRM</h5>
                         <p class="card-text">Otimize a gestão de equipes e horários com nossa solução intuitiva. Planeje, distribua e acompanhe escalas de trabalho de forma eficiente, garantindo a cobertura ideal e Dentro das Regras legais, Respeitando Intrajornada, Jornada Máxima de Trabalho, Intervalo Obrigatório, E descanso dominical</p>
                     </div>
                 </div>
@@ -245,3 +245,4 @@
 </body>
 
 </html>
+
